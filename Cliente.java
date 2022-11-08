@@ -1,9 +1,7 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Cliente {
 
@@ -13,23 +11,28 @@ public class Cliente {
         final String HOST = "127.0.0.1";
         //Puerto del servidor
         final int PUERTO = 5000;
-        DataInputStream in;
-        DataOutputStream out;
+        BufferedInputStream in;
+        BufferedOutputStream out;
+        byte[] byteArray;
 
         try {
             //Creo el socket para conectarme con el cliente
             Socket sc = new Socket(HOST, PUERTO);
 
-            in = new DataInputStream(sc.getInputStream());
-            out = new DataOutputStream(sc.getOutputStream());
+            in = new BufferedInputStream(sc.getInputStream());
+            out = new BufferedOutputStream(sc.getOutputStream());
+            byteArray = new byte[1024];
 
             //Envio un mensaje al cliente
-            out.writeUTF("¡Hola mundo desde el cliente!");
+            String mensaje = "Hola!";
+            out.write(mensaje.getBytes());
+            out.flush();
 
-            //Recibo el mensaje del servidor
-            String mensaje = in.readUTF();
-
-            System.out.println(mensaje);
+            int n = in.read(byteArray);
+            System.out.println(n);
+            String mensaje1 = new String(byteArray);
+            System.out.println(mensaje1);
+          
 
             sc.close();
 
