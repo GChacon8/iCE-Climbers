@@ -34,7 +34,7 @@ public class Cliente {
             sc.close();
 
         } catch (IOException ex) {
-            System.out.println("Error xd")
+            System.out.println("Error xd");
         }
 
     }
