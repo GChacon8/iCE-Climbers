@@ -27,13 +27,38 @@ UDP (SOCK_DGRAM) --> 	Socket de datagramas que no esta orientado a la conexion y
 #include <winsock2.h>
 #include <string.h>
 #include <stdlib.h>
+#include "stdbool.h"
+#include "pthread.h"
+
+
+void* handle_connection(SOCKET skt2){
+    char mensaje[2000];
+    //SOCKET skt2=*p_skt2;
+    //free(p_skt2);
+    int recv_size;
+    printf("Esperando mensaje entrante...\n");
+    if((recv_size = recv(skt2, mensaje, 2000, 0)) == SOCKET_ERROR)
+        printf("Recepcion fallida\n");
+
+    mensaje[recv_size] = '\0';
+    printf("%s\n\n", mensaje);
+
+    printf("Ingrese respuesta: "); gets(mensaje);
+    if(send(skt2, mensaje, strlen(mensaje), 0) < 0){
+        printf("Error al enviar mensaje\n");
+        exit(-1);
+    }
+
+    printf("Respuesta enviada exitosamente\n");
+
+    //system("pause");
+}
 
 int main(int argc, char **argv){
     WSADATA wsa;
     SOCKET skt, skt2;
-    int longitud_cliente, puerto = 5000, recv_size;
+    int longitud_cliente, puerto = 5000;
     struct sockaddr_in server, cliente;
-    char mensaje[2000];
 
     /**********************INICIALIZACION WINSOCK**********************/
     printf("Inicializando Winsock...");
@@ -62,36 +87,25 @@ int main(int argc, char **argv){
         exit(-1);
     }
     printf("Bind realizado\n");
-
     listen(skt, 5);
-    printf("Esperando conexiones entrantes...\n");
 
-    longitud_cliente = sizeof(struct sockaddr_in);
-    skt2 = accept(skt, (struct sockaddr*)&cliente, &longitud_cliente);
-    if(skt2 == INVALID_SOCKET){
-        printf("Fallo al aceptar la conexion\n");
-        exit(-1);
+
+    while(true){
+        printf("Esperando conexiones entrantes...\n");
+        longitud_cliente = sizeof(struct sockaddr_in);
+        skt2 = accept(skt, (struct sockaddr*)&cliente, &longitud_cliente);
+        if(skt2 == INVALID_SOCKET){
+            printf("Fallo al aceptar la conexion\n");
+            exit(-1);
+        }
+
+        system("cls");
+        printf("Cliente %s conectado exitosamente\n", inet_ntoa(cliente.sin_addr));
+        pthread_t t;
+        pthread_create(&t, NULL, (void *(*)(void *)) handle_connection, (void *) skt2);
+
     }
 
-    system("cls");
-    printf("Cliente %s conectado exitosamente\n", inet_ntoa(cliente.sin_addr));
-
-    printf("Esperando mensaje entrante...\n");
-    if((recv_size = recv(skt2, mensaje, 2000, 0)) == SOCKET_ERROR)
-        printf("Recepcion fallida\n");
-
-    mensaje[recv_size] = '\0';
-    printf("%s\n\n", mensaje);
-
-    printf("Ingrese respuesta: "); gets(mensaje);
-    if(send(skt2, mensaje, strlen(mensaje), 0) < 0){
-        printf("Error al enviar mensaje\n");
-        exit(-1);
-    }
-
-    printf("Respuesta enviada exitosamente\n");
-
-    system("pause");
 
     closesocket(skt);
     WSACleanup();
