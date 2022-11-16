@@ -4,42 +4,85 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Cliente {
+    final String HOST = "127.0.0.1";
+    //Puerto del servidor
+    final int PUERTO = 5000;
+    BufferedInputStream in;
+    BufferedOutputStream out;
+    byte[] byteArray;
+    Socket sc;
+    boolean jugando = true;
+//GamePanel UI;
 
-    public static void main(String[] args) {
-
-        //Host del servidor
-        final String HOST = "127.0.0.1";
-        //Puerto del servidor
-        final int PUERTO = 5000;
-        BufferedInputStream in;
-        BufferedOutputStream out;
-        byte[] byteArray;
+    public void main(String[] args) {
 
         try {
-            //Creo el socket para conectarme con el cliente
-            Socket sc = new Socket(HOST, PUERTO);
 
-            in = new BufferedInputStream(sc.getInputStream());
-            out = new BufferedOutputStream(sc.getOutputStream());
-            byteArray = new byte[1024];
+            this.iniciaSocket();
 
-            //Envio un mensaje al cliente
-            String mensaje = "Hola!";
-            out.write(mensaje.getBytes());
-            out.flush();
+            while (jugando){
+                this.recibir();
+                this.recibir();
+                this.recibir();
+                this.enviar();
+            }
 
-            int n = in.read(byteArray);
-            System.out.println(n);
-            String mensaje1 = new String(byteArray);
-            System.out.println(mensaje1);
-          
+            cerrarSocket();
 
-            sc.close();
 
         } catch (IOException ex) {
             System.out.println("Error xd");
         }
 
+    }
+
+    void iniciaSocket() throws IOException{
+        sc = new Socket(HOST, PUERTO);
+        in = new BufferedInputStream(sc.getInputStream());
+        out = new BufferedOutputStream(sc.getOutputStream());
+        byteArray = new byte[1024];
+        System.out.println("Se crearon los puertos");
+    }
+    void recibir() throws IOException{
+        int n = in.read(byteArray);
+        System.out.println(n);
+        String mensaje = new String(byteArray);
+        System.out.println(mensaje);
+    }
+
+    void enviar() throws IOException{
+        out.write("Hola".getBytes());
+        out.flush();
+    }
+
+    void cerrarSocket() throws IOException {
+        sc.close();
+        System.out.println("Cliente desconectado");
+    }
+
+    void readEnemigos(String mensaje){
+        if (mensaje.substring(0, 0) == "Y"){
+           // crearYeti(String mensaje.substring(1, 1), String mensaje.substring(2, 2))
+            System.out.println("Se crea un yeti");
+        }
+        else if (mensaje.substring(0, 0) == "A"){
+            //crearAve(String mensaje.substring(1, 1), String mensaje.substring(2, 2))
+            System.out.println("Se crea un Ave");
+        }
+        else if(mensaje.substring(0, 0) == "H"){
+            //crearHielo(String mensaje.substring(1, 1), String mensaje.substring(2, 2))
+            System.out.println("Se crea un Hielo");
+        }
+    }
+
+    void readPtos(String mensaje){
+        //UI.setPuntos(mensaje)
+        System.out.println("Se establecieron los puntos");
+    }
+
+    void readVidas(String mensaje){
+        //UI.setVidas(mensaje)
+        System.out.println("Se establecieron las vidas");
     }
 
 }
