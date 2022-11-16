@@ -31,20 +31,65 @@ UDP (SOCK_DGRAM) --> 	Socket de datagramas que no esta orientado a la conexion y
 #include "pthread.h"
 
 
-void* handle_connection(SOCKET skt2){
-    char mensaje[2000];
+void concatenarCharACadena(char c, char *cadena)
+{
+    char cadenaTemporal[2];
+    cadenaTemporal[0] = c;
+    cadenaTemporal[1] = '\0';
+    strcat(cadena, cadenaTemporal);
+}
+
+char* menu(char *respuesta){
+    char tipo[20];
+    char lado[20];
+    char piso[20];
+    printf("digite\nY para yeti\nA para ave\nH para hielo\nrespuesta: ");
+    gets(tipo);
+    //printf( strcmp(tipo, "1"));
+    if(strcmp(tipo,"Y") == 0){
+        printf("lado donde desea que aparezca\nD para derecha\nI para izquierda\nrepuesta: ");
+        gets(lado);
+        printf("piso donde desea que apareza (digite el numero de piso)\nrespuesta: ");
+        gets(piso);
+        strcat(respuesta, strcat(tipo,strcat(lado,piso)));
+    }
+    else if(strcmp(tipo,"A") == 0){
+        printf("piso donde desea que apareza (digite el numero de piso)\nrespuesta: ");
+        gets(piso);
+        return strcat(respuesta,strcat(tipo,piso));
+    }
+    else if(strcmp(tipo,"H") == 0){
+        printf("posicion en X donde desea que aparezca\nrepuesta: ");
+        gets(lado);
+        printf("piso donde desea que apareza (digite el numero de piso)\nrespuesta: ");
+        gets(piso);
+        return strcat(respuesta,strcat(tipo,strcat(lado,piso)));
+    }
+    else{
+        printf("\n\nentreda invalida intente de nuevo\n\n");
+        return menu(respuesta);
+    }
+
+
+}
+
+void handle_connection(SOCKET skt2){
+    char mensaje_entrada[2000];
+    char mensaje_salida[200];
     //SOCKET skt2=*p_skt2;
     //free(p_skt2);
     int recv_size;
     printf("Esperando mensaje entrante...\n");
-    if((recv_size = recv(skt2, mensaje, 2000, 0)) == SOCKET_ERROR)
+    if((recv_size = recv(skt2, mensaje_entrada, 2000, 0)) == SOCKET_ERROR)
         printf("Recepcion fallida\n");
 
-    mensaje[recv_size] = '\0';
-    printf("%s\n\n", mensaje);
+    mensaje_entrada[recv_size] = '\0';
+    printf("%s\n\n", mensaje_entrada);
 
-    printf("Ingrese respuesta: "); gets(mensaje);
-    if(send(skt2, mensaje, strlen(mensaje), 0) < 0){
+    //printf("Ingrese respuesta: "); gets(mensaje);
+    menu(mensaje_salida);
+
+    if(send(skt2, mensaje_salida, strlen(mensaje_salida), 0) < 0){
         printf("Error al enviar mensaje\n");
         exit(-1);
     }
@@ -101,8 +146,8 @@ int main(int argc, char **argv){
 
         system("cls");
         printf("Cliente %s conectado exitosamente\n", inet_ntoa(cliente.sin_addr));
-        pthread_t t;
-        pthread_create(&t, NULL, (void *(*)(void *)) handle_connection, (void *) skt2);
+        handle_connection(skt2);
+        //closesocket(skt);
 
     }
 
