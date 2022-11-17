@@ -16,7 +16,7 @@ public class GameWindow {
 		jframe.add(gamePanel);
 		jframe.setLocationRelativeTo(null);
 		jframe.setResizable(true);
-		jframe.setLocation(0,0);
+		jframe.setLocation(0, 0);
 		jframe.pack();
 		jframe.setVisible(true);
 		jframe.addWindowFocusListener(new WindowFocusListener() {
