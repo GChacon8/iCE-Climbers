@@ -10,7 +10,7 @@ public class GameWindow {
 
 	public GameWindow(GamePanel gamePanel) {
 
-		jframe = new JFrame();
+		jframe = new JFrame("iCE-Climbers");
 
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.add(gamePanel);
