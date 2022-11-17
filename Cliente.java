@@ -14,28 +14,6 @@ public class Cliente {
     boolean jugando = true;
 //GamePanel UI;
 
-    public void main(String[] args) {
-
-        try {
-
-            this.iniciaSocket();
-
-            while (jugando){
-                this.recibir();
-                this.recibir();
-                this.recibir();
-                this.enviar();
-            }
-
-            cerrarSocket();
-
-
-        } catch (IOException ex) {
-            System.out.println("Error xd");
-        }
-
-    }
-
     void iniciaSocket() throws IOException{
         sc = new Socket(HOST, PUERTO);
         in = new BufferedInputStream(sc.getInputStream());
