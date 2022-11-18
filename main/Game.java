@@ -16,6 +16,9 @@ public class Game implements Runnable {
 	private Thread gameThread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
+	private Player player;
+	private Player2 player2;
+	private LevelManager levelManager;
 	private Playing playing;
 	private Menu menu;
 
@@ -135,6 +138,14 @@ public class Game implements Runnable {
 	public void windowFocusLost() {
 		player.resetDirBooleans();
 		player2.resetDirBooleans();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public Player2 getPlayer2(){
+		return player2;
 	}
 
 }
