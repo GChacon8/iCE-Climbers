@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import entities.Player;
 import entities.Player2;
 import levels.LevelManager;
+import gamestates.Gamestate;
+import gamestates.Menu;
+import gamestates.Playing;
 
 public class Game implements Runnable {
 
@@ -13,9 +16,8 @@ public class Game implements Runnable {
 	private Thread gameThread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
-	private Player player;
-	private Player2 player2;
-	private LevelManager levelManager;
+	private Playing playing;
+	private Menu menu;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2f;
@@ -53,6 +55,18 @@ public class Game implements Runnable {
 		levelManager.update();
 		player.update();
 		player2.update();
+
+		switch (Gamestate.state) {
+			case MENU:
+				menu.update();
+				break;
+			case PLAYING:
+				playing.update();
+				break;
+			default:
+				break;
+	
+			}
 	}
 
 	public void render(Graphics g) {
@@ -60,6 +74,17 @@ public class Game implements Runnable {
 		levelManager.draw(g);
 		player.render(g);
 		player2.render(g);
+		
+		switch (Gamestate.state) {
+			case MENU:
+				menu.draw(g);
+				break;
+			case PLAYING:
+				playing.draw(g);
+				break;
+			default:
+				break;
+			}
 	}
 
 	@Override
@@ -112,11 +137,4 @@ public class Game implements Runnable {
 		player2.resetDirBooleans();
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public Player2 getPlayer2(){
-		return player2;
-	}
 }
