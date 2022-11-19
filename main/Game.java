@@ -17,7 +17,7 @@ public class Game implements Runnable {
 	private Menu menu;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static float SCALE = 2f;
+	public final static float SCALE = 1.5f;
 	public final static int TILES_IN_WIDTH = 26; // 26
 	public final static int TILES_IN_HEIGHT = 14; // 14
 	public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
@@ -47,16 +47,19 @@ public class Game implements Runnable {
 
 	public void update() {
 		switch (Gamestate.state) {
-			case MENU:
-				menu.update();
-				break;
-			case PLAYING:
-				playing.update();
-				break;
-			default:
-				break;
-	
-			}
+		case MENU:
+			menu.update();
+			break;
+		case PLAYING:
+			playing.update();
+			break;
+		case OPTIONS:
+		case QUIT:
+		default:
+			System.exit(0);
+			break;
+
+		}
 	}
 
 	public void render(Graphics g) {
@@ -120,7 +123,6 @@ public class Game implements Runnable {
 	public void windowFocusLost() {
 		if (Gamestate.state == Gamestate.PLAYING)
 			playing.getPlayer().resetDirBooleans();
-			playing.getPlayer2().resetDirBooleans();
 	}
 
 
