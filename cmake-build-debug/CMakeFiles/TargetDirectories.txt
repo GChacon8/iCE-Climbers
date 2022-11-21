@@ -1,3 +1,3 @@
-C:/Users/joedu/OneDrive/Escritorio/iCE-Climbers/cmake-build-debug/CMakeFiles/iCE_Climbers.dir
-C:/Users/joedu/OneDrive/Escritorio/iCE-Climbers/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/joedu/OneDrive/Escritorio/iCE-Climbers/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/gabri/OneDrive/Documents/GitHub/iCE-Climbers/cmake-build-debug/CMakeFiles/iCE_Climbers.dir
+C:/Users/gabri/OneDrive/Documents/GitHub/iCE-Climbers/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gabri/OneDrive/Documents/GitHub/iCE-Climbers/cmake-build-debug/CMakeFiles/rebuild_cache.dir

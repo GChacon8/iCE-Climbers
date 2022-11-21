@@ -9,7 +9,7 @@
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.23"
+						"string" : "3.22.3"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/joedu/OneDrive/Escritorio/iCE-Climbers/cmake-build-debug",
-		"source" : "C:/Users/joedu/OneDrive/Escritorio/iCE-Climbers"
+		"build" : "C:/Users/gabri/OneDrive/Documents/GitHub/iCE-Climbers/cmake-build-debug",
+		"source" : "C:/Users/gabri/OneDrive/Documents/GitHub/iCE-Climbers"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 3
 	}
 }
